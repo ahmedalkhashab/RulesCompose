@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.example"
-val jarVersion = "1.0.45"
+val jarVersion = "1.0.46"
 
 repositories {
     mavenCentral()
