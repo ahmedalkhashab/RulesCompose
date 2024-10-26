@@ -1,7 +1,7 @@
 import org.gradle.jvm.tasks.Jar
 
 plugins {
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm") version "2.0.21" // Using the stable Kotlin 2.0.21 version
     `maven-publish`
 }
 
@@ -32,15 +32,14 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17)) // Kotlin 2.0.21 requires JDK 17 or higher
+    }
 }
 
-
 tasks.withType<Jar> {
-    // Set strategy to handle duplicate files within the jar
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    // Define attributes for the manifest of the jar
     manifest {
         attributes(
             "Implementation-Title" to "stc Custom Ktlint Rules",
@@ -48,7 +47,6 @@ tasks.withType<Jar> {
         )
     }
 
-    // Collect the runtime dependencies and include them in the jar file
     from({
         configurations["runtimeClasspath"].map { if (it.isDirectory) it else zipTree(it) }
     })
