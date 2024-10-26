@@ -2,6 +2,7 @@ import org.gradle.jvm.tasks.Jar
 
 plugins {
     kotlin("jvm") version "2.0.0"
+    `maven-publish`
 }
 
 group = "com.example"
@@ -51,4 +52,39 @@ tasks.withType<Jar> {
     from({
         configurations["runtimeClasspath"].map { if (it.isDirectory) it else zipTree(it) }
     })
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("gpr") {
+            from(components["java"])
+
+            pom {
+                name.set("stc Custom Ktlint Rules")
+                description.set("A set of custom ktlint rules for formatting Kotlin code")
+                url.set("https://github.com/ahmedalkhashab/RulesCompose") // Update with your repo URL
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("ahmedalkhashab")
+                        name.set("ahmed alkhashab")
+                        email.set("a.khashab88@gmail.com")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/ahmedalkhashab/RulesCompose.git")
+                    developerConnection.set("scm:git:ssh://github.com/ahmedalkhashab/RulesCompose.git")
+                    url.set("https://github.com/ahmedalkhashab/RulesCompose")
+                }
+            }
+        }
+    }
 }
